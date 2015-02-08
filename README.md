@@ -59,6 +59,8 @@ This contract was compiled using cpp-ethereum/solc, using the flags "solc OrderS
 
 [5]: Currently the only mutating public functions in this contract are *insert()* and *remove()*.
 
-## Copyright
+## Copyright & License
 
-© 2015 Conrad Barski
+Licensed under GNU GENERAL PUBLIC LICENSE Version 3
+
+Copyright © 2015 Conrad Barski

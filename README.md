@@ -1,2 +1,63 @@
-# ethereum-order-statistic-tree
-An Order Statistic Tree in the Ethereum Solidity Language
+># ethereum-order-statistic-tree
+An Order Statistic Tree implementation in the Ethereum Solidity Language
+
+# Rationale
+Most smart contracts in the ethereum smart contract system will probably involve products or users. In many instances, it may be necessary for the contract to rank these products or users to make a decision. This is particularly important for contracts involving an reputation or auction algorithm [1].
+
+Common ranking statistics include:
+
+ - Determining percentile of a value
+ - Determining membership in the "top n" for a value
+ - Determining the rank order of a value
+
+The naïve algorithm for ranking data involves sorting the entire list of values and determining position in this list. However, in the ethereum system this is not viable for several reasons:
+
+ 1. Sorting a list repeatedly as values are inserted/removed is inefficient, and would be extremely costly in terms of an ethereum gas price for execution.
+ 2. Blocks in ethereum have a fixed gas limit. Therefore, if a "global" operation needs to be performed in a single transaction, such as sorting all products/users on some metric, it may simply be impossible to perform this transaction after a certain number of products/users is reached by a contract.
+
+Therefore, it is necessary to implement a data structure in an ethereum contract maintains a balanced set of values at all times, even as new values are inserted/removed. For this contract, we achieve this by implementing an [Order Statistic Tree](http://en.wikipedia.org/wiki/Order_statistic_tree) with an balanced tree structure via the [AVL method](http://en.wikipedia.org/wiki/AVL_tree). Using this data structure, the OrderStatisticTree contract can offer O(logn) inserts, removals, percentiles, topn, and rank order determination [2] [3].
+
+# Running this contract on go-ethereum
+
+To try this contract via go-ethereum, simply:
+
+1. Host the files in this repo on a web server on your local machine
+2. Run the go ethereum CLI client on localhost:8080 with the "-rpc" flag enabled (or modify ost_test.js to use a different JSON-RPC endpoint.) Make sure you have some ether currency before continuing with the following steps. [3]
+3. Launch "ost_text.html" in Google Chrome.
+4. Press "pubish contract" to publish the OST contract to the _(Note: This will publish a binary version of the contract, already compiled- At this time, go-ethereum does not yet contain support for compiling the solidity language.)_
+5. Press either "Run tests" to run programmer-created tests, or "Run generative tests" to run algorithmically generative tests design to deeply exercise the tree balancing algorithms.
+
+At this point, you should see output in the browser UI exercising functions in the contract, showing outputs anfd test results, as well as showing store information extracted from the contract for debugging [4].
+
+# Disclaimer
+
+This contract has been heavily tested with random scripts, however ethereum is an extremely Alpha project right now and the OST is extremely alpha as well, and almost certainly contains bugs. I can take no responsibility if anything bad happens to you if you use this contract. Also, be aware that in actual use you MUST implement "gatekeeper" code of some sort in the mutating public functions of the contract, or any random ethereum user can modify it at will. [5]
+
+# Documentation of Public Contract Functions
+
+ - *insert(uint value)*: Places a new value into the tree. _Duplicates are permitted_.
+ - *remove(uint value)*: Removes a value, if it exists. _Only removes a single value if there are duplicates_.
+ - *rank(uint value)*: Returns the position of the item in the list, if items were sorted from smallest to largest.
+ - *duplicates(uint value)*: Returns how many instances of this value are currently stored.
+ - *count()*: Returns the total count of values in the tree.
+ - *in_top_n(uint value,uint n)*: Indicates whether the given item is in the top n values in the tree (only true for duplicates if all members are in the "top n".)
+ - *percentile()*: Returns the percentile of the value in the tree.
+ - *node_?(uint_value)*: These are various low-level debugging functions that will likely be removed in future versions of this contract.
+
+# Compiling the Contract
+
+This contract was compiled using cpp-ethereum/solc, using the flags "solc OrderStatisticTree.sol --json-abi file --binary file".
+
+[1]: There is already a [heap implementation](https://github.com/ethereum/serpent/blob/master/examples/cyberdyne/heap.se) available in the ethereum serpent dialect that can be used for many auction types. However, other auction algorithms require an order statistic tree or similar structure for efficient implementation.
+
+[2]: Note that the underlying data structure algos in ethereum already carry an O(logn^2) limitation, so technically speaking this OST contract has O(logn^3) performance characteristics.
+
+[3]: Go ethereum is currently under heavy development. If you are reading this in early 2015 you may want to review some [important information here](http://forum.ethereum.org/discussion/1784/my-working-steps-go-ethereum-cli-json-rpc-chrome-browser-etherum-js-solidity) regarding the go-ethereum JSON-RPC interface to get things working.
+
+[4]: My implementation for showing debugging input is inefficient and the main reason for the slowness in running the tests- This would not be an issue in actual use.
+
+[5]: Currently the only mutating public functions in this contract are insert() and remove().
+
+# Copyright
+
+© 2015 Conrad Barski

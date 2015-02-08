@@ -1,0 +1,229 @@
+[
+   {
+      "constant" : true,
+      "inputs" : [],
+      "name" : "count",
+      "outputs" : [
+         {
+            "name" : "count",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_right_child",
+      "outputs" : [
+         {
+            "name" : "child",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         },
+         {
+            "name" : "n",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "in_top_n",
+      "outputs" : [
+         {
+            "name" : "truth",
+            "type" : "bool"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "percentile",
+      "outputs" : [
+         {
+            "name" : "k",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_side",
+      "outputs" : [
+         {
+            "name" : "side",
+            "type" : "bool"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : false,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "remove",
+      "outputs" : [],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_parent",
+      "outputs" : [
+         {
+            "name" : "parent",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_dupes",
+      "outputs" : [
+         {
+            "name" : "dupes",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_left_child",
+      "outputs" : [
+         {
+            "name" : "child",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : false,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "insert",
+      "outputs" : [],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "duplicates",
+      "outputs" : [
+         {
+            "name" : "n",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "rank",
+      "outputs" : [
+         {
+            "name" : "smaller",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_count",
+      "outputs" : [
+         {
+            "name" : "count",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "node_height",
+      "outputs" : [
+         {
+            "name" : "height",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   }
+]

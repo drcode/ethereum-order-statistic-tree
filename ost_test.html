@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <script type="text/javascript" src="bignumber.min.js"></script>
+    <script type="text/javascript" src="ethereum.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="ost_test.js"></script>
+    <style>
+      td {border: 1px solid black;
+          padding:0.5em}
+      
+    </style>
+  </head>
+  <body>
+    <p>
+      <button id="publish" onClick="publish_contract()">Publish contract</button>
+      <span id="address"></span>
+    </p>
+    <p>
+      <button id="test" onClick="test_contract(false)" style="display:none">Run tests</button>
+      <button id="generative_test" onClick="test_contract(true)" style="display:none">Run generative tests</button>
+      <table id="test_table">
+        <tbody>
+        </tbody>
+      </table>
+      <pre id="script"></pre>
+    </p>
+  </body>
+</html>

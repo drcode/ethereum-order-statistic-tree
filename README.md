@@ -1,7 +1,7 @@
-# An Order Statistic Tree implementation in the Ethereum Solidity Language
+# Order Statistic Tree implementation in the Ethereum Solidity Language
 
 ## Rationale
-Most smart contracts in the ethereum smart contract system will probably involve products or users. In many instances, it may be necessary for the contract to rank these products or users to make a decision. This is particularly important for contracts involving an reputation or auction algorithm [1].
+Most smart contracts in the ethereum smart contract system will probably involve products and/or users. In many instances, it may be necessary for the contract to rank these products or users to make a decision. This is particularly important for contracts involving a reputation or auction algorithm [1].
 
 Common ranking statistics include:
 

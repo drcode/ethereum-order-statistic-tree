@@ -23,14 +23,14 @@ To try this contract via go-ethereum, simply:
 1. Host the files in this repo on a web server on your local machine
 2. Run the go ethereum CLI client on localhost:8080 with the "-rpc" flag enabled (or modify ost_test.js to use a different JSON-RPC endpoint.) Make sure you have some ether currency before continuing with the following steps. [3]
 3. Launch "ost_test.html" in Google Chrome.
-4. Press "pubish contract" to publish the OST contract _(Note: This will publish a binary version of the contract, already compiled- At this time, go-ethereum does not yet contain support for compiling the solidity language. See steps below for separate compilation.)_
+4. Press "publish contract" to publish the OST contract _(Note: This will publish a binary version of the contract, already compiled- At this time, go-ethereum does not yet contain support for compiling the solidity language. See steps below for separate compilation.)_
 5. Press either "Run tests" to run programmer-created tests, or "Run generative tests" to run algorithmically generated tests designed to deeply exercise the tree balancing algorithms.
 
 At this point, you should see output in the browser UI exercising functions in the contract, showing outputs and test results, as well as showing store information extracted from the contract for debugging [4].
 
 ## Disclaimer
 
-This contract has been heavily tested with random scripts, however ethereum is an extremely alpha project right now and the OST is extremely alpha as well, and almost certainly contains bugs. I can take no responsibility if anything bad happens to you if you use this contract. Also, be aware that *in actual use you MUST implement "gatekeeper" code of some sort in the mutating public functions of the contract, or any random ethereum user can modify data in the contract at will.* [5]
+This contract has been heavily tested with random scripts, however ethereum is an extremely alpha project right now and the OST is extremely alpha as well, and almost certainly contains bugs. I can take no responsibility if anything bad happens to you if you use this contract. Also, be aware that **in actual use you MUST implement "gatekeeper" code of some sort in the mutating public functions of the contract, or any random ethereum user can modify data in the contract at will.** [5]
 
 ## Documentation of Public Contract Functions
 
@@ -40,7 +40,7 @@ This contract has been heavily tested with random scripts, however ethereum is a
  - **duplicates(uint value)**: Returns how many instances of this value are currently stored.
  - **count()**: Returns the total count of values in the tree.
  - **in_top_n(uint value,uint n)**: Indicates whether the given item is in the top n values in the tree (only true for duplicates if all members are in the "top n".)
- - **percentile()**: Returns the percentile of the value in the tree.
+ - **percentile(uint value)**: Returns the percentile of the value in the tree.
  - **node_?(uint value)**: These are various low-level debugging functions that will likely be removed in future versions of this contract.
 
 ## Compiling the Contract

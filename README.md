@@ -1,7 +1,6 @@
-# ethereum-order-statistic-tree
-An Order Statistic Tree implementation in the Ethereum Solidity Language
+# An Order Statistic Tree implementation in the Ethereum Solidity Language
 
-# Rationale
+## Rationale
 Most smart contracts in the ethereum smart contract system will probably involve products or users. In many instances, it may be necessary for the contract to rank these products or users to make a decision. This is particularly important for contracts involving an reputation or auction algorithm [1].
 
 Common ranking statistics include:
@@ -17,7 +16,7 @@ The naïve algorithm for ranking data involves sorting the entire list of values
 
 Therefore, it is necessary to implement a data structure in an ethereum contract that maintains a sorted set of values at all times, even as new values are inserted/removed. For this contract, we achieve this by implementing an [Order Statistic Tree](http://en.wikipedia.org/wiki/Order_statistic_tree) with a balanced tree structure via the [AVL method](http://en.wikipedia.org/wiki/AVL_tree). Using this data structure, the OrderStatisticTree contract can offer O(logn) inserts, removals, percentiles, topn, and rank order determination [2] [3].
 
-# Running this contract on go-ethereum
+## Running this contract on go-ethereum
 
 To try this contract via go-ethereum, simply:
 
@@ -29,11 +28,11 @@ To try this contract via go-ethereum, simply:
 
 At this point, you should see output in the browser UI exercising functions in the contract, showing outputs and test results, as well as showing store information extracted from the contract for debugging [4].
 
-# Disclaimer
+## Disclaimer
 
 This contract has been heavily tested with random scripts, however ethereum is an extremely alpha project right now and the OST is extremely alpha as well, and almost certainly contains bugs. I can take no responsibility if anything bad happens to you if you use this contract. Also, be aware that *in actual use you MUST implement "gatekeeper" code of some sort in the mutating public functions of the contract, or any random ethereum user can modify data in the contract at will.* [5]
 
-# Documentation of Public Contract Functions
+## Documentation of Public Contract Functions
 
  - **insert(uint value)**: Places a new value into the tree. _Duplicates are permitted_.
  - **remove(uint value)**: Removes a value, if it exists. _Only removes a single value if there are duplicates_.
@@ -44,11 +43,11 @@ This contract has been heavily tested with random scripts, however ethereum is a
  - **percentile()**: Returns the percentile of the value in the tree.
  - **node_?(uint value)**: These are various low-level debugging functions that will likely be removed in future versions of this contract.
 
-# Compiling the Contract
+## Compiling the Contract
 
 This contract was compiled using cpp-ethereum/solc, using the flags "solc OrderStatisticTree.sol --json-abi file --binary file".
 
-# Footnotes
+## Footnotes
 
 [1]: There is already a [heap implementation](https://github.com/ethereum/serpent/blob/master/examples/cyberdyne/heap.se) available in the ethereum serpent dialect that can be used for many auction types. However, other auction algorithms require an order statistic tree or similar structure for efficient implementation.
 
@@ -60,6 +59,6 @@ This contract was compiled using cpp-ethereum/solc, using the flags "solc OrderS
 
 [5]: Currently the only mutating public functions in this contract are *insert()* and *remove()*.
 
-# Copyright
+## Copyright
 
 © 2015 Conrad Barski

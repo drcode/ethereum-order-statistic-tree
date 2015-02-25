@@ -49,6 +49,8 @@ _Note: One important ability of OSTs is being able to perform select_at(), which
 
 ## Compiling the Contract
 
+_Update 2/25/2015: The cpp-ethereum guys apparently recently changed the permitted stack depth for the compiler, so this won't compile unless you use a version of "solc" a couple of weeks old. I will need to refactor the code a bit to reduce stack depth, should be complete within the next week or so...
+
 This contract was compiled using cpp-ethereum/solc, using the flags "solc OrderStatisticTree.sol --json-abi file --binary file".
 
 ## Footnotes

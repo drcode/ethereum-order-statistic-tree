@@ -45,7 +45,7 @@ This contract has been heavily tested with random scripts, however ethereum is a
  - **percentile(uint value)**: Returns the percentile of the value in the tree.
  - **node_?(uint value)**: These are various low-level debugging functions that will likely be removed in future versions of this contract.
 
-_Note: One important ability of OSTs is being able to perform select_at(), which essentially means "Show me the value at N percentile". This is not currently implemented but will be added in the near future_
+_Note: One important ability of OSTs is being able to perform select_at(), which essentially means "Show me the value at N percentile". This is not currently implemented but will be added in the near future._
 
 ## Compiling the Contract
 

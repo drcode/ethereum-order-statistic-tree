@@ -26,6 +26,8 @@ To try this contract via go-ethereum, simply:
 4. Press "publish contract" to publish the OST contract _(Note: This will publish a binary version of the contract, already compiled- At this time, go-ethereum does not yet contain support for compiling the solidity language. See steps below for separate compilation.)_
 5. Press either "Run tests" to run programmer-created tests, or "Run generative tests" to run algorithmically generated tests designed to deeply exercise the tree balancing algorithms.
 
+Here is what the output should look like after clicking "Run Tests" button (see lower right panel): http://jsfiddle.net/zwxsqcr0/
+
 At this point, you should see output in the browser UI exercising functions in the contract, showing outputs and test results, as well as showing store information extracted from the contract for debugging [4].
 
 ## Disclaimer

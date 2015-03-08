@@ -171,6 +171,36 @@ contract OrderStatisticTree {
         n.height=0;
         n.dupes=0;
     }
+    function remove_branch(uint value,uint left,uint right) private {
+        uint ipn=rightmost_leaf(left);
+        Node i=nodes[ipn];
+        uint dupes=i.dupes;
+        remove_helper(ipn);
+        Node n=nodes[value];
+        uint parent=n.parent;
+        Node p=nodes[parent];
+        uint height=n.height;
+        bool side=n.side;
+        uint count=n.count;
+        right=n.children[true];
+        left=n.children[false];
+        p.children[side]=ipn;
+        i.parent=parent;
+        i.side=side;
+        i.count=count+dupes-n.dupes;
+        i.height=height;
+        i.dupes=dupes;
+        if (left!=0) {
+            i.children[false]=left;
+            nodes[left].parent=ipn;
+        }
+        if (right!=0) {
+            i.children[true]=right;
+            nodes[right].parent=ipn;
+        }
+        zero_out(value);
+        update_counts(ipn);
+    }
     function remove_helper(uint value) private {
         Node n=nodes[value];
         uint parent=n.parent;
@@ -184,34 +214,7 @@ contract OrderStatisticTree {
             fix_parents(parent,side);
         }
         else if ((left !=0) && (right != 0)) {
-            uint ipn=rightmost_leaf(left);
-            Node i=nodes[ipn];
-            uint dupes=i.dupes;
-            remove_helper(ipn);
-            n=nodes[value];
-            parent=n.parent;
-            p=nodes[parent];
-            uint height=n.height;
-            side=n.side;
-            uint count=n.count;
-            right=n.children[true];
-            left=n.children[false];
-            p.children[side]=ipn;
-            i.parent=parent;
-            i.side=side;
-            i.count=count+dupes-n.dupes;
-            i.height=height;
-            i.dupes=dupes;
-            if (left!=0) {
-                i.children[false]=left;
-                nodes[left].parent=ipn;
-            }
-            if (right!=0) {
-                i.children[true]=right;
-                nodes[right].parent=ipn;
-            }
-            zero_out(value);
-            update_counts(ipn);
+            remove_branch(value,left,right);
         }
         else {
             uint child=left+right;

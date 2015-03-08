@@ -49,7 +49,7 @@ This contract has been heavily tested with random scripts, however ethereum is a
  - **percentile(uint value)**: Returns the percentile of the value in the tree.
  - **at_percentile(uint percentile)**: Returns the value at the given percentile.
  - **permille(uint value)**: Returns the permille of the value in the tree. (This is like percentile, just with thousands instead of hundreds.)
- - **at_pemille(uint permille)**: Returns the value at the given permille.
+ - **at_permille(uint permille)**: Returns the value at the given permille.
  - **median()**: Returns the median of all values. (Returns the higher value if there are an even number of values.)
  - **node_?(uint value)**: These are various low-level debugging functions that will likely be removed in future versions of this contract.
 

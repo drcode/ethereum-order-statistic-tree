@@ -137,10 +137,39 @@
             "type" : "uint256"
          }
       ],
+      "name" : "permille",
+      "outputs" : [
+         {
+            "name" : "k",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
       "name" : "node_left_child",
       "outputs" : [
          {
             "name" : "child",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [],
+      "name" : "median",
+      "outputs" : [
+         {
+            "name" : "value",
             "type" : "uint256"
          }
       ],
@@ -213,6 +242,40 @@
       "constant" : true,
       "inputs" : [
          {
+            "name" : "permille",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "at_permille",
+      "outputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "pos",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "select_at",
+      "outputs" : [
+         {
+            "name" : "value",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
             "name" : "value",
             "type" : "uint256"
          }
@@ -221,6 +284,23 @@
       "outputs" : [
          {
             "name" : "height",
+            "type" : "uint256"
+         }
+      ],
+      "type" : "function"
+   },
+   {
+      "constant" : true,
+      "inputs" : [
+         {
+            "name" : "percentile",
+            "type" : "uint256"
+         }
+      ],
+      "name" : "at_percentile",
+      "outputs" : [
+         {
+            "name" : "value",
             "type" : "uint256"
          }
       ],

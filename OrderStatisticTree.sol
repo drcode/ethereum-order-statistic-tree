@@ -264,6 +264,39 @@ contract OrderStatisticTree {
             }
         }
     }
+    function select_at(uint pos) constant returns (uint value){
+        uint zeroes=nodes[0].dupes;
+        if (pos<zeroes)
+            return 0;
+        else {
+            uint pos_new=pos-zeroes;
+            uint cur=nodes[0].children[true];
+            Node cur_node=nodes[cur];
+            while(true){
+                uint left=cur_node.children[false];
+                uint cur_num=cur_node.dupes+1;
+                if (left!=0) {
+                    Node left_node=nodes[left];
+                    uint left_count=left_node.count;
+                }
+                else {
+                    left_count=0;
+                }
+                if (pos_new<left_count) {
+                    cur=left;
+                    cur_node=left_node;
+                }
+                else if (pos_new<left_count+cur_num){
+                    return cur;
+                }
+                else {
+                    cur=cur_node.children[true];
+                    cur_node=nodes[cur];
+                    pos_new-=left_count+cur_num;
+                }
+            }
+        }
+    }
     function duplicates(uint value) constant returns (uint n){
         return nodes[value].dupes+1;
     }
@@ -282,6 +315,23 @@ contract OrderStatisticTree {
         uint same=nodes[value].dupes;
         uint num=count();
         return (pos*100+(same*100+100)/2)/num;
+    }
+    function at_percentile(uint percentile) constant returns (uint value){
+        uint n=count();
+        return select_at(percentile*n/100);
+    }
+    function permille(uint value) constant returns (uint k){
+        uint pos=rank(value);
+        uint same=nodes[value].dupes;
+        uint num=count();
+        return (pos*1000+(same*1000+1000)/2)/num;
+    }
+    function at_permille(uint permille) constant returns (uint value){
+        uint n=count();
+        return select_at(permille*n/1000);
+    }
+    function median() constant returns (uint value){
+        return at_percentile(50);
     }
     function node_left_child(uint value) constant returns (uint child){
         child=nodes[value].children[false];

@@ -32,6 +32,7 @@ function cleanup_hex(s){
 function load_contract_hex(){
     $.getJSON(
         'OrderStatisticTree.abi',
+        //'http://localhost:8081/OrderStatisticTree.abi',
         function(abi){
             contract_abi=abi;
         })
@@ -40,6 +41,7 @@ function load_contract_hex(){
 function load_contract_abi(){
     $.get(
         'OrderStatisticTree.binary',
+        //'http://localhost:8081/OrderStatisticTree.binary',
         function(hex){
             contract_hex=cleanup_hex(hex);
         })
@@ -154,6 +156,21 @@ var tests=
             'insert',
             [8],
             null
+        ],
+        [
+            'select_at',
+            [1],
+            5
+        ],
+        [
+            'select_at',
+            [4],
+            7
+        ],
+        [
+            'median',
+            [],
+            6
         ],
         [
             'remove',

@@ -8,6 +8,8 @@ Common ranking statistics include:
  - Determining percentile of a value
  - Determining membership in the "top n" for a value
  - Determining the rank order of a value
+ - Determining the median
+ - Determining a value in a certain position in the ordered dataset.
 
 The naïve algorithm for ranking data involves sorting the entire list of values and determining position in this list. However, in the ethereum system this is not viable for several reasons:
 
@@ -24,7 +26,8 @@ To try this contract via go-ethereum, simply:
 2. Run the go ethereum CLI client on localhost:8080 with the "-rpc" flag enabled (or modify ost_test.js to use a different JSON-RPC endpoint.) Make sure you have some ether currency before continuing with the following steps. [3]
 3. Launch "ost_test.html" in Google Chrome.
 4. Press "publish contract" to publish the OST contract _(Note: This will publish a binary version of the contract, already compiled- At this time, go-ethereum does not yet contain support for compiling the solidity language. See steps below for separate compilation.)_
-5. Press either "Run tests" to run programmer-created tests, or "Run generative tests" to run algorithmically generated tests designed to deeply exercise the tree balancing algorithms.
+5. Wait 12 seconds or more for a block to be mined _(In the future, I'll modify the contract to wait automatically.)_
+6. Press either "Run tests" to run programmer-created tests, or "Run generative tests" to run algorithmically generated tests designed to deeply exercise the tree balancing algorithms.
 
 Here is what the output should look like after clicking "Run Tests" button (see lower right panel): http://jsfiddle.net/zwxsqcr0/1/
 
@@ -39,17 +42,18 @@ This contract has been heavily tested with random scripts, however ethereum is a
  - **insert(uint value)**: Places a new value into the tree. _Duplicates are permitted_.
  - **remove(uint value)**: Removes a value, if it exists. _Only removes a single value if there are duplicates_.
  - **rank(uint value)**: Returns the position of the item in the list, if items were sorted from smallest to largest.
+ - **select_at(uint pos)**: Returns the value at the given location in the dataset, ranked from lowest to highest.
  - **duplicates(uint value)**: Returns how many instances of this value are currently stored.
  - **count()**: Returns the total count of values in the tree.
  - **in_top_n(uint value,uint n)**: Indicates whether the given item is in the top n values in the tree (only true for duplicates if all members are in the "top n".)
  - **percentile(uint value)**: Returns the percentile of the value in the tree.
+ - **at_percentile(uint percentile)**: Returns the value at the given percentile.
+ - **permille(uint value)**: Returns the permille of the value in the tree. (This is like percentile, just with thousands instead of hundreds.)
+ - **at_pemille(uint permille)**: Returns the value at the given permille.
+ - **median()**: Returns the median of all values. (Returns the higher value if there are an even number of values.)
  - **node_?(uint value)**: These are various low-level debugging functions that will likely be removed in future versions of this contract.
 
-_Note: One important ability of OSTs is being able to perform select_at(), which essentially means "Show me the value at N percentile". This is not currently implemented but will be added in the near future._
-
 ## Compiling the Contract
-
-_Update 2/25/2015: The cpp-ethereum guys apparently recently changed the permitted stack depth for the compiler, so this won't compile unless you use a version of "solc" a couple of weeks old. I will need to refactor the code a bit to reduce stack depth, should be complete within the next week or so..._
 
 This contract was compiled using cpp-ethereum/solc, using the flags "solc OrderStatisticTree.sol --json-abi file --binary file".
 

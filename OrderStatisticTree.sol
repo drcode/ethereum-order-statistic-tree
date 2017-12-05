@@ -16,11 +16,12 @@
 
 */
 
+pragma solidity ^0.4.18;
+
 contract OrderStatisticTree {
-    function OrderStatisticTree() {
-    }
+   
     function update_count(uint value) private {
-        Node n=nodes[value];
+        Node storage n=nodes[value];
         n.count=1+nodes[n.children[false]].count+nodes[n.children[true]].count+n.dupes;
     }
     function update_counts(uint value) private {
@@ -31,7 +32,7 @@ contract OrderStatisticTree {
         }
     }
     function update_height(uint value) private {
-        Node n=nodes[value];
+        Node storage n=nodes[value];
         uint height_left=nodes[n.children[false]].height;
         uint height_right=nodes[n.children[true]].height;
         if (height_left>height_right)
@@ -40,19 +41,19 @@ contract OrderStatisticTree {
             n.height=height_right+1;
     }
     function balance_factor(uint value) constant private returns (int bf) {
-        Node n=nodes[value];
+        Node storage n=nodes[value];
         return int(nodes[n.children[false]].height)-int(nodes[n.children[true]].height);
     }
     function rotate(uint value,bool dir) private {
         bool other_dir=!dir;
-        Node n=nodes[value]; 
+        Node storage n=nodes[value]; 
         bool side=n.side;
         uint parent=n.parent;
         uint value_new=n.children[other_dir];
-        Node n_new=nodes[value_new];
+        Node storage n_new=nodes[value_new];
         uint orphan=n_new.children[dir];
-        Node p=nodes[parent];
-        Node o=nodes[orphan];
+        Node storage p=nodes[parent];
+        Node storage o=nodes[orphan];
         p.children[side]=value_new;
         n_new.side=side;
         n_new.parent=parent;
@@ -69,7 +70,7 @@ contract OrderStatisticTree {
     }
     function rebalance_insert(uint n_value) private {
         update_height(n_value);
-        Node n=nodes[n_value];
+        Node storage n=nodes[n_value];
         uint p_value=n.parent;
         if (p_value!=0) {
             int p_bf=balance_factor(p_value);
@@ -92,7 +93,7 @@ contract OrderStatisticTree {
         if (p_value!=0) {
             update_height(p_value);
             int p_bf=balance_factor(p_value);
-            bool dir=side;
+            // bool dir=side;
             int sign;
             if (side)
                 sign=1;
@@ -100,7 +101,7 @@ contract OrderStatisticTree {
                 sign=-1;
             int bf=balance_factor(p_value);
             if (bf==(2*sign)) {
-                Node p=nodes[p_value];
+                Node storage p=nodes[p_value];
                 uint s_value=p.children[!side];
                 int s_bf=balance_factor(s_value);
                 if (s_bf == (-1 * sign))
@@ -125,11 +126,11 @@ contract OrderStatisticTree {
         }
     }
     function insert_helper(uint p_value,bool side,uint value) private {
-        Node root=nodes[p_value];
+        Node storage root=nodes[p_value];
         uint c_value=root.children[side];
         if (c_value==0){
             root.children[side]=value;
-            Node child=nodes[value];
+            Node storage child=nodes[value];
             child.parent=p_value;
             child.side=side;
             child.height=1;
@@ -147,7 +148,7 @@ contract OrderStatisticTree {
             insert_helper(c_value,side_new,value);
         }
     }
-    function insert(uint value) {
+    function insert(uint value) public {
         if (value==0)
             nodes[value].dupes++;
         else{
@@ -162,7 +163,7 @@ contract OrderStatisticTree {
             return value;
     }
     function zero_out(uint value) private {
-        Node n=nodes[value];
+        Node storage n=nodes[value];
         n.parent=0;
         n.side=false;
         n.children[false]=0;
@@ -173,12 +174,12 @@ contract OrderStatisticTree {
     }
     function remove_branch(uint value,uint left,uint right) private {
         uint ipn=rightmost_leaf(left);
-        Node i=nodes[ipn];
+        Node storage i=nodes[ipn];
         uint dupes=i.dupes;
         remove_helper(ipn);
-        Node n=nodes[value];
+        Node storage n=nodes[value];
         uint parent=n.parent;
-        Node p=nodes[parent];
+        Node storage p=nodes[parent];
         uint height=n.height;
         bool side=n.side;
         uint count=n.count;
@@ -202,10 +203,10 @@ contract OrderStatisticTree {
         update_counts(ipn);
     }
     function remove_helper(uint value) private {
-        Node n=nodes[value];
+        Node storage n=nodes[value];
         uint parent=n.parent;
         bool side=n.side;
-        Node p=nodes[parent];
+        Node storage p=nodes[parent];
         uint left=n.children[false];
         uint right=n.children[true];
         if ((left == 0) && (right == 0)) {
@@ -218,7 +219,7 @@ contract OrderStatisticTree {
         }
         else {
             uint child=left+right;
-            Node c=nodes[child];
+            Node storage c=nodes[child];
             p.children[side]=child;
             c.parent=parent;
             c.side=side;
@@ -226,8 +227,8 @@ contract OrderStatisticTree {
             fix_parents(parent,side);
         }
     }
-    function remove(uint value){
-        Node n=nodes[value];
+    function remove(uint value) public {
+        Node storage n=nodes[value];
         if (value==0){
             if (n.dupes==0)
                 return;
@@ -245,16 +246,16 @@ contract OrderStatisticTree {
         else
             remove_helper(value);
     }
-    function rank(uint value) constant returns (uint smaller){
+    function rank(uint value) constant public returns (uint smaller) {
         if(value!=0){
             smaller=nodes[0].dupes;
             uint cur=nodes[0].children[true];
-            Node cur_node=nodes[cur];
+            Node storage cur_node=nodes[cur];
             while(true){
                 if (cur<=value){
                     if(cur<value)
                         smaller+=1+cur_node.dupes;
-                    uint left_child=+cur_node.children[false];
+                    uint left_child=cur_node.children[false];
                     if (left_child!=0)
                         smaller+=nodes[left_child].count;
                 }
@@ -264,19 +265,19 @@ contract OrderStatisticTree {
             }
         }
     }
-    function select_at(uint pos) constant returns (uint value){
+    function select_at(uint pos) constant public returns (uint value) {
         uint zeroes=nodes[0].dupes;
         if (pos<zeroes)
             return 0;
         else {
             uint pos_new=pos-zeroes;
             uint cur=nodes[0].children[true];
-            Node cur_node=nodes[cur];
+            Node storage cur_node=nodes[cur];
             while(true){
                 uint left=cur_node.children[false];
                 uint cur_num=cur_node.dupes+1;
                 if (left!=0) {
-                    Node left_node=nodes[left];
+                    Node storage left_node=nodes[left];
                     uint left_count=left_node.count;
                 }
                 else {
@@ -297,61 +298,61 @@ contract OrderStatisticTree {
             }
         }
     }
-    function duplicates(uint value) constant returns (uint n){
+    function duplicates(uint value) constant public returns (uint n) {
         return nodes[value].dupes+1;
     }
-    function count() constant returns (uint count){
-        Node root=nodes[0];
-        Node child=nodes[root.children[true]];
+    function count() constant public returns (uint _count) {
+        Node storage root=nodes[0];
+        Node storage child=nodes[root.children[true]];
         return root.dupes+child.count;
     }
-    function in_top_n(uint value,uint n) constant returns (bool truth){
+    function in_top_n(uint value,uint n) constant public returns (bool truth) {
         uint pos=rank(value);
         uint num=count();
         return (num-pos-1<n);
     }
-    function percentile(uint value) constant returns (uint k){
+    function percentile(uint value) constant public returns (uint k) {
         uint pos=rank(value);
         uint same=nodes[value].dupes;
         uint num=count();
         return (pos*100+(same*100+100)/2)/num;
     }
-    function at_percentile(uint percentile) constant returns (uint value){
+    function at_percentile(uint _percentile) constant public returns (uint value) {
         uint n=count();
-        return select_at(percentile*n/100);
+        return select_at(_percentile*n/100);
     }
-    function permille(uint value) constant returns (uint k){
+    function permille(uint value) constant public returns (uint k) {
         uint pos=rank(value);
         uint same=nodes[value].dupes;
         uint num=count();
         return (pos*1000+(same*1000+1000)/2)/num;
     }
-    function at_permille(uint permille) constant returns (uint value){
+    function at_permille(uint _permille) constant public returns (uint value) {
         uint n=count();
-        return select_at(permille*n/1000);
+        return select_at(_permille*n/1000);
     }
-    function median() constant returns (uint value){
+    function median() constant public returns (uint value) {
         return at_percentile(50);
     }
-    function node_left_child(uint value) constant returns (uint child){
+    function node_left_child(uint value) constant public returns (uint child) {
         child=nodes[value].children[false];
     }
-    function node_right_child(uint value) constant returns (uint child){
+    function node_right_child(uint value) constant public returns (uint child) {
         child=nodes[value].children[true];
     }
-    function node_parent(uint value) constant returns (uint parent){
+    function node_parent(uint value) constant public returns (uint parent) {
         parent=nodes[value].parent;
     }
-    function node_side(uint value) constant returns (bool side){
+    function node_side(uint value) constant public returns (bool side) {
         side=nodes[value].side;
     }
-    function node_height(uint value) constant returns (uint height){
+    function node_height(uint value) constant public returns (uint height) {
         height=nodes[value].height;
     }
-    function node_count(uint value) constant returns (uint count){
-        count=nodes[value].count;
+    function node_count(uint value) constant public returns (uint _count) {
+        _count=nodes[value].count;
     }
-    function node_dupes(uint value) constant returns (uint dupes){
+    function node_dupes(uint value) constant public returns (uint dupes) {
         dupes=nodes[value].dupes;
     }
     struct Node {
@@ -364,5 +365,4 @@ contract OrderStatisticTree {
     }
     mapping(uint => Node) nodes;
 }
-
 
